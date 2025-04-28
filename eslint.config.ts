@@ -1,22 +1,37 @@
-import { globalIgnores } from 'eslint/config'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-import pluginVue from 'eslint-plugin-vue'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import type { Linter } from 'eslint'
+import js from '@eslint/js'
+import prettier from 'eslint-plugin-prettier'
+import vueParser from 'vue-eslint-parser'
+import globals from 'globals'
 
-// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
-// import { configureVueProject } from '@vue/eslint-config-typescript'
-// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
-// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+export default [
+  // Базовые правила ESLint
+  js.configs.recommended,
 
-export default defineConfigWithVueTs(
+  // Парсер Vue + TypeScript
   {
-    name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        extraFileExtensions: ['.vue'],
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
   },
 
-  globalIgnores(['**/dist/**', '**/dist-ssr/**', '**/coverage/**']),
-
-  pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
-  skipFormatting,
-)
+  // Интеграция Prettier в ESLint
+  {
+    plugins: {
+      prettier,
+    },
+    rules: {
+      'prettier/prettier': 'warn', // Подсвечивать ошибки Prettier как ESLint-ошибки
+    },
+  },
+] satisfies Linter.FlatConfig[]
