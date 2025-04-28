@@ -6,60 +6,48 @@ const tree = ref<Tree | null>(null)
 function generateTestItems(): Item[] {
   const items: Item[] = []
 
-  // Добавляем элементы с числовым id=2
-  items.push(
-    { id: 2, parent: 1, otherFields: { type: 'number', value: 'first 2' } },
-    { id: 2, parent: 3, otherFields: { type: 'number', value: 'duplicate 2' } }, // Дубликат
-  )
+  items.push({ id: 2, parent: 1, label: 'first' }, { id: 2, parent: 3, label: 'second' })
 
-  // Добавляем элементы со строковым id='2'
   items.push(
     {
       id: '2',
       parent: '1',
-      otherFields: { type: 'string', value: 'string 2' },
+      label: 'first',
     },
     {
       id: '2',
       parent: null,
-      otherFields: { type: 'string', value: 'root string 2' },
-    }, // Дубликат
+      label: 'nulled',
+    },
   )
 
-  // Добавляем элементы с разными родителями (некоторые будут заглушками)
   items.push(
-    { id: 1, parent: null, otherFields: { type: 'root', value: 'root 1' } },
+    { id: 1, parent: null, label: 'first' },
     {
       id: 3,
       parent: 999,
-      otherFields: { type: 'child', value: 'child with phantom parent' },
+      label: 'third',
     }, // Родителя 999 нет в данных
     {
       id: 4,
       parent: 2,
-      otherFields: { type: 'mixed', value: 'child of number 2' },
+      label: 'fourth',
     },
     {
       id: 5,
       parent: '2',
-      otherFields: { type: 'mixed', value: 'child of string 2' },
+      label: 'fifth',
     },
   )
 
-  // Добавляем явные дубликаты с разными parent
-  items.push(
-    { id: 6, parent: null, otherFields: { value: 'original 6' } },
-    { id: 6, parent: 2, otherFields: { value: 'duplicate 6' } }, // Переопределит original
-  )
+  items.push({ id: 6, parent: null, label: 'sixNP' }, { id: 6, parent: 2, label: 'six' })
 
-  // Добавляем циклическую ссылку (parent ссылается на себя)
-  items.push({ id: 7, parent: 7, otherFields: { value: 'self reference' } })
+  items.push({ id: 7, parent: 7, label: 'seven' })
 
-  // Добавляем элемент с id=2, но другим типом (строка вместо числа)
   items.push({
     id: '2',
     parent: 1,
-    otherFields: { type: 'another string', value: 'another string 2' },
+    label: 'second1par',
   })
 
   return items

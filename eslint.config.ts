@@ -10,7 +10,7 @@ export default [
 
   // Парсер Vue + TypeScript
   {
-    files: ['**/*.vue'],
+    files: ['**/*.vue', '**/*.ts'],
     languageOptions: {
       parser: vueParser,
       parserOptions: {

@@ -12,10 +12,8 @@
       <span class="node-parent" v-if="node.parent"> → parent: {{ node.parent.id }} </span>
     </div>
 
-    <div class="node-fields" v-if="Object.keys(node.otherFields).length">
-      <div v-for="(value, key) in node.otherFields" :key="key">
-        {{ key }}: <strong>{{ value }}</strong>
-      </div>
+    <div class="node-fields">
+      {{ node.label }}
     </div>
 
     <div class="children" v-if="hasChildren && isExpanded">
