@@ -1,8 +1,8 @@
-import type { Linter } from 'eslint'
-import js from '@eslint/js'
-import prettier from 'eslint-plugin-prettier'
-import vueParser from 'vue-eslint-parser'
-import globals from 'globals'
+import type { Linter } from 'eslint';
+import js from '@eslint/js';
+import prettier from 'eslint-plugin-prettier';
+import vueParser from 'vue-eslint-parser';
+import globals from 'globals';
 
 export default [
   // Базовые правила ESLint
@@ -34,4 +34,4 @@ export default [
       'prettier/prettier': 'warn', // Подсвечивать ошибки Prettier как ESLint-ошибки
     },
   },
-] satisfies Linter.FlatConfig[]
+] satisfies Linter.FlatConfig[];

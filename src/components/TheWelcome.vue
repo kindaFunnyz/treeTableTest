@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { type Item, Tree, TreeNode } from '@/Tree.ts'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import TreeNodeComp from '@/components/TreeNodeComp.vue'
+import type { ColDef } from 'ag-grid-community'
+import TypedAgGrid from '@/components/TypedAgGrid.vue'
 const tree = ref<Tree | null>(null)
 function generateTestItems(): Item[] {
   const items: Item[] = []
@@ -57,9 +59,25 @@ function func() {
   tree.value = new Tree(testItems)
   tree.value.printTree()
 }
+onMounted(func)
 const getNodeKey = (node: TreeNode) => {
   return `${typeof node.id}-${node.id}` // Уникальный ключ с учетом типа
 }
+const colDefs = ref([
+  {
+    headerName: 'Категория',
+    field: 'category',
+    valueGetter: (p) => (p.data.children && p.data.children.length ? 'Группа' : 'Элемент'),
+  },
+  { headerName: 'Категория', field: 'label' },
+])
+const autoGroupColumnDef = ref<ColDef>({
+  headerName: 'Номер',
+  field: 'id',
+  cellRendererParams: {
+    suppressCount: true,
+  },
+})
 </script>
 
 <template>
@@ -69,6 +87,16 @@ const getNodeKey = (node: TreeNode) => {
       <h2>Tree Structure</h2>
       <div v-if="tree" class="tree">
         <TreeNodeComp v-for="node in tree.roots" :key="getNodeKey(node)" :node="node" :level="0" />
+      </div>
+      <div style="width: 100%; height: 700px">
+        <TypedAgGrid
+          style="width: 100%; height: 100%"
+          :rowData="tree?.roots"
+          treeDataChildrenField="children"
+          :treeData="true"
+          :columnDefs="colDefs"
+          :autoGroupColumnDef="autoGroupColumnDef"
+        ></TypedAgGrid>
       </div>
     </div>
   </main>
